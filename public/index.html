@@ -7,6 +7,7 @@
 
     <title>Data selfie</title>
 </head>
+
 <body>
 
     <h2>Data Selfie</h2>
@@ -21,11 +22,30 @@
             if ('geolocation' in navigator) {
                 /* geolocation is available */
                 //console.log("available" );
-                navigator.geolocation.getCurrentPosition((position) => {
+                navigator.geolocation.getCurrentPosition(async position => {
+
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
                     //console.log(position.coords.latitude, position.coords.longitude);
-                    document.getElementById('lat').textContent = position.coords.latitude;
-                    document.getElementById('lon').textContent = position.coords.longitude;
+                    document.getElementById('lat').textContent = lat;
+                    document.getElementById('lon').textContent = lon;
                     document.getElementById('init').textContent = 'available';
+
+                    const data = { lat, lon };
+
+                    const options = { 
+
+                        method:'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+
+                     };
+                    
+                    const response = await fetch('/api', options);
+                    const json = await response.json();
+                    console.log(json);
 
                 });
 
@@ -39,4 +59,5 @@
     </script>
 
 </body>
+
 </html>
