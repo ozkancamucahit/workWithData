@@ -18,8 +18,13 @@
         longitude: <span id="lon"></span> 
     </p>
 
+    <button id="btn_submit">Submit</button>
+
     <script>
-            if ('geolocation' in navigator) {
+            
+            document.getElementById("btn_submit").addEventListener("click",
+            event => {
+                if ('geolocation' in navigator) {
                 /* geolocation is available */
                 //console.log("available" );
                 navigator.geolocation.getCurrentPosition(async position => {
@@ -55,6 +60,9 @@
                 document.getElementById('init').textContent = 'not available';
 
             }
+
+
+            })
         
     </script>
 
