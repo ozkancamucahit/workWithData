@@ -7,6 +7,20 @@ const express = require('express');
 const app = express(); // create express app
 const dataStore = require('nedb');
 
+
+// const mysql = require('mysql2');
+// var con = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "Muhammed17"
+//   });
+  
+//   con.connect(err =>{
+//     if (err) { throw err }
+//     console.log("Connected!");
+//   });
+
+
 app.listen(3000, () => console.log( "listening 3000" ) );
 // create folder 'public'
 app.use( express.static('public') );
@@ -25,13 +39,23 @@ app.post( '/api', (request, response) => {
 
     database.insert(data);
     //echo back the request
-    response.json( {
-        status:'success',
-        timestamp: timestamp,
-        latitude: data.lat,
-        longitude: data.lon
-    } );
+    response.json( data );
 
     response.end();
 
+} );
+
+app.get('/api', ( request, response ) => {
+
+    // find everything
+    database.find( {}, (err, data)=>{
+        if (err){
+            response.end();
+            return;
+        }
+
+        response.json(data);
+    } );
+
+    //response.json( {test: 1717} );
 } );
