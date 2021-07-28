@@ -6,6 +6,7 @@
 const express = require('express');
 const app = express(); // create express app
 const dataStore = require('nedb');
+const fetch = require( 'node-fetch' );
 
 
 // const mysql = require('mysql2');
@@ -27,6 +28,7 @@ app.use( express.static('public') );
 app.use( express.json( { limit:'1mb' } ) );
 
 const database = new dataStore("database.db");
+
 database.loadDatabase();
 
 app.post( '/api', (request, response) => {
@@ -59,3 +61,24 @@ app.get('/api', ( request, response ) => {
 
     //response.json( {test: 1717} );
 } );
+
+app.get( '/weather/:latlon', async(request, response) => {
+    const latlon = request.params.latlon.split(',');
+    const lat = latlon[0];
+    const lon = latlon[1];
+    const API_KEY = 'f6ac3d8ac0e9e10a30efdaa7c22536b8';
+
+
+    const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+
+    const weather_response = await fetch(api_url);
+    const weather_json = await weather_response.json();
+    //console.log( 'weather api :', weather_json );
+    console.log( weather_json );
+    // make the api call from here
+    //response.json( weather_json );
+});
+
+
+
+

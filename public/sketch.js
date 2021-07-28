@@ -1,10 +1,4 @@
-
-
-function setup(){
         
-    noCanvas();
-    const video = createCapture( VIDEO );
-    video.size( 160, 120 );
     
      document.getElementById("btn_submit").addEventListener("click",
     event => {
@@ -15,15 +9,17 @@ function setup(){
 
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-            video.loadPixels(); //load video elements pixels to canvas
-            //convers data in canvas to base64
-            const image64 = video.canvas.toDataURL();
             //console.log(position.coords.latitude, position.coords.longitude);
             document.getElementById('lat').textContent = lat;
             document.getElementById('lon').textContent = lon;
             document.getElementById('init').textContent = 'available';
 
-            const data = { lat, lon, image64 };
+            const data = { lat, lon };
+            const api_url = `/weather/${lat},${lon}`
+
+            const weather_response = await fetch(api_url);
+            const weather_json = await weather_response.json();
+            //console.log( 'weather api :', weather_json );
 
             const options = { 
 
@@ -37,7 +33,7 @@ function setup(){
             
             const response = await fetch('/api', options);
             const json = await response.json();
-            console.log(json);
+            //console.log(json);
 
         });
 
@@ -49,5 +45,4 @@ function setup(){
     }
 
 
-    })
-}//end setup
+    });
