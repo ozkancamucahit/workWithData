@@ -1,70 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
 
-    <title>Data selfie</title>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+    <style>
+        #checkinMap {
+            height: 200px;
+        }
+    </style>
+
+    <title>Weaher</title>
 </head>
 
 <body>
 
-    <h2>Data Selfie</h2>
-    <div> <a href="/">Hello</a> | <a href="goodbye.html">GoodBye</a> </div>
+    <h2>the weather</h2>
+    <div><a href="/">check in</a> | <a href="/logs">View checkins</a></div>
+    
     <p id="init">Hello!!!</p>
 
     <p>latitude: <span id="lat"></span> <br/> 
         longitude: <span id="lon"></span> 
     </p>
 
-    <button id="btn_submit">Submit</button>
+    <div id="checkinMap"></div>
 
-    <script>
-            
-            document.getElementById("btn_submit").addEventListener("click",
-            event => {
-                if ('geolocation' in navigator) {
-                /* geolocation is available */
-                //console.log("available" );
-                navigator.geolocation.getCurrentPosition(async position => {
+    <button id="btn_submit">Checkin</button>
 
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    //console.log(position.coords.latitude, position.coords.longitude);
-                    document.getElementById('lat').textContent = lat;
-                    document.getElementById('lon').textContent = lon;
-                    document.getElementById('init').textContent = 'available';
-
-                    const data = { lat, lon };
-
-                    const options = { 
-
-                        method:'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-
-                     };
-                    
-                    const response = await fetch('/api', options);
-                    const json = await response.json();
-                    console.log(json);
-
-                });
-
-            } else {
-                /* geolocation IS NOT available */
-                //console.log("not available" );
-                document.getElementById('init').textContent = 'not available';
-
-            }
+    <script src="logs/logs.js"></script>
+    <script src="sketch.js"></script>
 
 
-            })
-        
-    </script>
+    <p>Buradaki hava durumu: <span id="summary"></span> <br>
+        sıcaklık: <span id="temp"></span> derece.
+    </p>
 
 </body>
 
