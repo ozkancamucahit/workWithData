@@ -7,6 +7,7 @@ const express = require('express');
 const app = express(); // create express app
 const dataStore = require('nedb');
 const fetch = require( 'node-fetch' );
+require('dotenv').config();
 
 
 // const mysql = require('mysql2');
@@ -66,7 +67,7 @@ app.get( '/weather/:latlon', async(request, response) => {
     const latlon = request.params.latlon.split(',');
     const lat = latlon[0];
     const lon = latlon[1];
-    const API_KEY = 'f6ac3d8ac0e9e10a30efdaa7c22536b8';
+    const API_KEY = process.env.API_KEY;
 
 
     const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
