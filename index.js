@@ -74,9 +74,11 @@ app.get( '/weather/:latlon', async(request, response) => {
     const weather_response = await fetch(api_url);
     const weather_json = await weather_response.json();
     //console.log( 'weather api :', weather_json );
-    console.log( weather_json );
+    //console.log( "weather response : ", weather_response );
     // make the api call from here
-    //response.json( weather_json );
+
+    //send backto client
+    response.json( weather_json );
 });
 
 

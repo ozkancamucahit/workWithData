@@ -20,6 +20,9 @@
             const weather_response = await fetch(api_url);
             const weather_json = await weather_response.json();
             //console.log( 'weather api :', weather_json );
+            document.getElementById("summary").textContent = weather_json.weather[0].main;
+            document.getElementById("temp").textContent = weather_json.main.temp;
+
 
             const options = { 
 
@@ -33,7 +36,9 @@
             
             const response = await fetch('/api', options);
             const json = await response.json();
-            //console.log(json);
+
+
+
 
         });
 
