@@ -14,7 +14,6 @@
             document.getElementById('lon').textContent = lon;
             document.getElementById('init').textContent = 'available';
 
-            const data = { lat, lon };
             const api_url = `/weather/${lat},${lon}`
 
             const weather_response = await fetch(api_url);
@@ -23,6 +22,11 @@
             document.getElementById("summary").textContent = weather_json.weather[0].main;
             document.getElementById("temp").textContent = weather_json.main.temp;
 
+            let weather = weather_json.weather[0];
+
+            let temp = weather_json.main.temp;
+
+            const data = { lat, lon, weather, temp };
 
             const options = { 
 
@@ -50,4 +54,4 @@
     }
 
 
-    });
+    }); // click event end

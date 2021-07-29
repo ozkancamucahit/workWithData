@@ -33,7 +33,7 @@ database.loadDatabase();
 
 app.post( '/api', (request, response) => {
     
-    console.log( request.body );
+    //console.log( "req body : ",request.body );
     
     const data = request.body;
     const timestamp = Date.now();
@@ -69,7 +69,7 @@ app.get( '/weather/:latlon', async(request, response) => {
     const API_KEY = 'f6ac3d8ac0e9e10a30efdaa7c22536b8';
 
 
-    const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+    const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
 
     const weather_response = await fetch(api_url);
     const weather_json = await weather_response.json();
