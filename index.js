@@ -22,9 +22,14 @@ require('dotenv').config();
 //     console.log("Connected!");
 //   });
 
+const port = process.env.PORT || 1717;
 
-app.listen(3000, () => console.log( "listening 3000" ) );
-// create folder 'public'
+
+app.listen(port, () => {
+    console.log( `listening port : ${port}` );
+} );
+
+    // create folder 'public'
 app.use( express.static('public') );
 app.use( express.json( { limit:'1mb' } ) );
 
