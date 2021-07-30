@@ -14,7 +14,7 @@ require('dotenv').config();
 // var con = mysql.createConnection({
 //     host: "localhost",
 //     user: "root",
-//     password: "Muhammed17"
+//     password: ""
 //   });
   
 //   con.connect(err =>{
