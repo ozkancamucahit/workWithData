@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
-    <title>Data selfie</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+    <style>
+        #checkinMap {
+            height: 200px;
+        }
+    </style>
+
+    <title>Weaher</title>
 </head>
 
 <body>
 
-    <h2>Data Selfie</h2>
-    <div><a href="/">enter</a> | <a href="/logs">list</a></div>
+    <h2>the weather</h2>
+    <div><a href="/">check in</a> | <a href="/logs">View checkins</a></div>
     
     <p id="init">Hello!!!</p>
 
@@ -19,9 +35,18 @@
         longitude: <span id="lon"></span> 
     </p>
 
-    <button id="btn_submit">Submit</button>
+    <div id="checkinMap"></div>
+
+    <button id="btn_submit">Checkin</button>
 
     <script src="sketch.js"></script>
+    <script src="logs/logs.js"></script>
+
+
+
+    <p>Buradaki hava durumu: <span id="summary"></span> <br>
+        sıcaklık: <span id="temp"></span> derece.
+    </p>
 
 </body>
 

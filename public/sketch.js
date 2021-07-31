@@ -1,10 +1,8 @@
-
-
-function setup(){
-        
-    noCanvas();
-    const video = createCapture( VIDEO );
-    video.size( 160, 120 );
+const mymap = L.map("checkinMap").setView([0, 0], 1);
+const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const tiles = L.tileLayer( tileUrl, {attribution} );
+tiles.addTo(mymap);        
     
      document.getElementById("btn_submit").addEventListener("click",
     event => {
@@ -15,15 +13,24 @@ function setup(){
 
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-            video.loadPixels(); //load video elements pixels to canvas
-            //convers data in canvas to base64
-            const image64 = video.canvas.toDataURL();
             //console.log(position.coords.latitude, position.coords.longitude);
             document.getElementById('lat').textContent = lat;
             document.getElementById('lon').textContent = lon;
             document.getElementById('init').textContent = 'available';
 
-            const data = { lat, lon, image64 };
+            const api_url = `/weather/${lat},${lon}`
+
+            const weather_response = await fetch(api_url);
+            const weather_json = await weather_response.json();
+            //console.log( 'weather api :', weather_json );
+            document.getElementById("summary").textContent = weather_json.weather[0].main;
+            document.getElementById("temp").textContent = weather_json.main.temp;
+
+            let weather = weather_json.weather[0];
+
+            let temp = weather_json.main.temp;
+
+            const data = { lat, lon, weather, temp };
 
             const options = { 
 
@@ -37,7 +44,9 @@ function setup(){
             
             const response = await fetch('/api', options);
             const json = await response.json();
-            console.log(json);
+
+
+
 
         });
 
@@ -49,5 +58,4 @@ function setup(){
     }
 
 
-    })
-}//end setup
+    }); // click event end
