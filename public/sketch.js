@@ -1,4 +1,8 @@
-        
+const mymap = L.map("checkinMap").setView([0, 0], 1);
+const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const tiles = L.tileLayer( tileUrl, {attribution} );
+tiles.addTo(mymap);        
     
      document.getElementById("btn_submit").addEventListener("click",
     event => {
