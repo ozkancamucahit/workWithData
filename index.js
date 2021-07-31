@@ -3,11 +3,33 @@
 
 
 // like import
+const { request } = require('express');
 const express = require('express');
 const app = express(); // create express app
 const dataStore = require('nedb');
 const fetch = require( 'node-fetch' );
 require('dotenv').config();
+
+const youtubeNotifier = require( 'youtube-notification' );
+
+const notifier = new YouTubeNotifier({
+    hubCallback: 'https://espyoutube.glitch.me/esp',
+    port: 8080,
+    path: '/esp'
+  });
+
+notifier.setup();
+
+notifier.on('notified', data => {
+    console.log('New Video');
+    console.log(
+      `${data.channel.name} just uploaded a new video titled: ${data.video.title}`
+    );
+  });
+   
+  notifier.subscribe('UCMyNomwx3XRN7mCWyRSHGRQ');
+
+
 
 
 // const mysql = require('mysql2');
@@ -22,7 +44,7 @@ require('dotenv').config();
 //     console.log("Connected!");
 //   });
 
-const port = process.env.PORT || 1717;
+const port = process.env.PORT || 3000;
 
 
 app.listen(port, () => {
@@ -88,5 +110,33 @@ app.get( '/weather/:latlon', async(request, response) => {
 });
 
 
+app.get("/esp", ( request, response )=> {
 
+
+    const data = request.query;
+
+    console.log( data );
+    
+    const challenge = data["hub.challenge"];
+    //console.log( "challenge : ", challange );
+    app.render("esp.html");
+    
+    response.send( challenge );
+    response.status(204);
+    response.end();
+
+} );
+
+app.post( "/esp*", ( request, response )  => {
+
+    
+    console.log( "query", request.query );
+    console.log( "params", request.params );
+    console.log( "headers", request.headers );
+    
+    response.status(200);
+    response.end();
+    
+
+});
 
