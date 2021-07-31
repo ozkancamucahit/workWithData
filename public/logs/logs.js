@@ -5,6 +5,7 @@ const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">Ope
 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tiles = L.tileLayer( tileUrl, {attribution} );
 tiles.addTo(mymap);
+
 async function getData() {
 
   const response = await fetch('/api');
