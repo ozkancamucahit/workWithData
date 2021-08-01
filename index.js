@@ -3,32 +3,13 @@
 
 
 // like import
-const { request } = require('express');
 const express = require('express');
 const app = express(); // create express app
 const dataStore = require('nedb');
 const fetch = require( 'node-fetch' );
 require('dotenv').config();
 
-const youtubeNotifier = require( 'youtube-notification' );
-
-const notifier = new YouTubeNotifier({
-    hubCallback: 'https://espyoutube.glitch.me/esp',
-    port: 8080,
-    path: '/esp'
-  });
-
-notifier.setup();
-
-notifier.on('notified', data => {
-    console.log('New Video');
-    console.log(
-      `${data.channel.name} just uploaded a new video titled: ${data.video.title}`
-    );
-  });
-   
-  notifier.subscribe('UCMyNomwx3XRN7mCWyRSHGRQ');
-
+const parseString = require('xml2js').parseString;
 
 
 
@@ -47,13 +28,14 @@ notifier.on('notified', data => {
 const port = process.env.PORT || 3000;
 
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log( `listening port : ${port}` );
 } );
 
     // create folder 'public'
-app.use( express.static('public') );
+app.use( express.static('public') );  
 app.use( express.json( { limit:'1mb' } ) );
+
 
 const database = new dataStore("database.db");
 
@@ -102,7 +84,7 @@ app.get( '/weather/:latlon', async(request, response) => {
     const weather_response = await fetch(api_url);
     const weather_json = await weather_response.json();
     //console.log( 'weather api :', weather_json );
-    //console.log( "weather response : ", weather_response );
+    console.log( "weather response : ", weather_response );
     // make the api call from here
 
     //send backto client
@@ -110,7 +92,9 @@ app.get( '/weather/:latlon', async(request, response) => {
 });
 
 
-app.get("/esp", ( request, response )=> {
+var entries;
+
+app.get( "/esp/not", ( request, response )  => {
 
 
     const data = request.query;
@@ -118,25 +102,55 @@ app.get("/esp", ( request, response )=> {
     console.log( data );
     
     const challenge = data["hub.challenge"];
-    //console.log( "challenge : ", challange );
-    app.render("esp.html");
-    
-    response.send( challenge );
+    response.send( challenge);
     response.status(204);
     response.end();
 
 } );
 
-app.post( "/esp*", ( request, response )  => {
+
+app.get( "/esp/feed/entries", ( request, response )  => {
+
+
+    response.json( entries );
+    response.status(204);
+    response.end();
+
+} );
+
+var rawBodySaver = function (req, res, buf, encoding) {
+    if (buf && buf.length) {
+      req.rawBody = buf.toString(encoding || 'utf8');
+    }
+  
+    //console.log("req body in saver =>", req.rawBody);
+  }
+
+
+app.use( express.raw( {type : 'application/atom+xml', verify: rawBodySaver} ) );
+
+app.post( "/esp/not*", ( request, response )  => {
+
+    const lol = request.get( "content-type" );
+    const body = request.read(12);
+    //console.log( request );
 
     
-    console.log( "query", request.query );
-    console.log( "params", request.params );
-    console.log( "headers", request.headers );
+    //console.log( "query => ", request.query );
+    //console.log( "params =>", request.params );
+    //console.log( "headers =>", request.headers );
+    //console.log( "body =>", request.body );
+    //console.log( "ct", lol );
+  
+    parseString(request.rawBody, function (err, result) {
+    entries = result;
+    console.log(result);
+    });
+
     
+
     response.status(200);
     response.end();
     
 
 });
-
