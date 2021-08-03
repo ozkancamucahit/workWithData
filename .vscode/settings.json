@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/b053842d-a3a9-49c9-ac04-1fe3c6e024a8/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/espyoutube",
+    "appService.deploySubpath": "."
+}
