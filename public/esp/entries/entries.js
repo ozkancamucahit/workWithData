@@ -1,9 +1,10 @@
 
-
+/**
+ * 
+ * @param {Promise} data Data to send to firebase
+ */
 async function sendDataToFirebase( data, ref )
 {
-
-
 
     var client_response = await fetch('/esp/channel');
     if ( client_response.status == 204 )
@@ -55,53 +56,35 @@ async function fireBaseInit( )
       // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     var database = firebase.database();
-    var ref =  database.ref("esp/feeds"); 
-
+    var ref =  database.ref("esp/feeds");
+    return ref;
     
 }
 
-//var objects = [];
-
-
-
+/**
+ * 
+ * @returns Feed xml parsed to json object || null if nothing found
+ */
 async function getData()
 {
-    var data;
 
-    const data_response = await fetch("/esp/feed/entries");
+    const data_response = await fetch('/esp/feed/entries/');
 
-    if ( data_response.status != 204 )
-    {
-        const data_json = await data_response.json();
-        // console.log("headers", data.headers);
-        // console.log("type :", data.type);
-        // console.log("feed", data.feed);
-        console.log("json feed =>", data_json);
-        //objects.push( data_json );
-        data =  data_json;
-        return data;
-    }
+    const data_json = await data_response.json();
 
-    else  data = null;
+    //console.log( "datajson:", data_json );
+    
+    if ( data_response.status != 400 )
+        return data_json;
 
-    return data;
+    else return null;
 
 }
 
-function myDisplayer(some) {
-    return some;
-  }
+var ref;
 
-// const ref =  fireBaseInit().then(
-//     function(value) {myDisplayer(value);},
-//     function(error) {myDisplayer(error);}
-//   );
-
-var den = "deneme";
-
-console.log(`heyoo "${den}"`);
-fireBaseInit();
-
-var data = getData();
-
-sendDataToFirebase( data );
+fireBaseInit()
+    .then( databaseref => {
+        getData()
+            .then ( data_json => sendDataToFirebase( data_json, databaseref ) )
+    } );

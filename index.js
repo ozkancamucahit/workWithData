@@ -97,7 +97,7 @@ app.get( '/weather/:latlon', async(request, response) => {
     response.json( weather_json );
 });
 
-var client = "lol";
+var client = "test";
 app.get( '/esp/channel', (request, response) =>{
     
     if ( client )
@@ -183,19 +183,18 @@ app.get( "/esp/not", ( request, response )  => {
 
 
 
-
-app.get( "/esp/feed/entries", ( request, response )  => {
+app.get( '/esp/feed/entries/', ( request, response )  => {
 
     if ( entries != null )
     {
         response.json( entries );
-        response.status(200);
         response.end();
     }
 
     // no entry available
     else {
-        response.status(204);
+        response.status(400);
+        response.json( {body : "empty.No feed available"});
         response.end();
     }
 
@@ -228,14 +227,14 @@ app.post( "/esp/not*", ( request, response )  => {
     video_title = entries.feed.entry[0].title[0];
     updated = entries.feed.entry[0].updated[0];
 
-    feed_string = `kanal :${channel_name},\n
+    feed_string = `\tkanal :${channel_name},\n
     "${video_title}" isminde bir video yukledi\n
     video linki: ${video_link}\n
     paylasim saati: ${Date(published)}\n
     guncellenme saati: ${Date( updated )}`;
 
     mqttclient.publish("esp/yt", feed_string);
-    console.log("logging fron index => ",feed_string);
+    //console.log("logging fron index => ",feed_string);
 
     });
     response.status(200);
